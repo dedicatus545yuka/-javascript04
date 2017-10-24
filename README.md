@@ -132,6 +132,8 @@ fn(10,20,30);
 ```
 4. 函数的函数体中，具有 arguments 对象 - **了解**
     * 作用 - 用于接收实际的实参内容（省略形参）
+    * 特点 - 是类数组对象
+    * 注意 - 仅在函数体中有效
 ```js
 function fn(){
     console.log(arguments);
@@ -146,6 +148,18 @@ fn(1,2,3);
 { '0': 1, '1': 2 }
 { '0': 1, '1': 2, '2': 3 }
  */
+```
+>arguments对象模拟函数的重载效果
+```js
+function add(){
+    if (arguments.length == 2){
+        return arguments[0] + arguments[1];
+    } else if (arguments.length == 3){
+        return arguments[0] + arguments[1] + arguments[2];
+    }
+}
+console.log(add(1,2));// 3
+console.log(add(1,2,3));// 6
 ```
 #### return语句  
 - 函数还可以包含一个返回语句（return）。当然，这并不是必需的。  
@@ -366,3 +380,21 @@ fn();
 // 在指定函数作用域外，不允许访问-报错 ReferenceError: n is not defined
 n();
 ```
+#### 作用域链
+```js
+var a = 'a';// 全局变量
+function fn(){
+    var b = 'b';// 局部变量
+    function n(){// 内部函数
+        var c = 'c';// 局部变量
+        function m(){// 相对于n函数的内部函数
+            var d = 'd';
+            console.log(a,b,c,d);
+        }
+        m();
+    }
+    n();
+}
+fn();
+```
+![示意图](http://a4.qpic.cn/psb?/V118JuTr0BKcy7/fT3qfjYSCp.WGBfSXE.4YUQb7Hr.6r6Mt25SfPJCE9E!/m/dPMAAAAAAAAA&bo=GwWAAgAAAAADB74!&rf=photolist)
